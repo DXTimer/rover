@@ -1,3 +1,4 @@
+require 'pry'
 class Rover
 
   def initialize(input) #["1 2 N", "LMLMLMLMM"]
@@ -7,27 +8,27 @@ class Rover
   end
 
   def make_the_move(input)
-    @position_array << @input[0].split(' ').flatten  #["1", "2", "N"]
+    @position_array = @input[0].split(' ') #["1", "2", "N"]
     @input[1].split('').each do |letter|  #["L", "M", "L", "M", "L", "M", "L", "M", "M"]
       if letter == 'L' || letter == 'R'
-        position_array[-1] = adjust_direction(letter, position_array, direction_array)
+        @position_array[-1] = adjust_direction(letter, @position_array, @direction_array)
       else
-        move(position_array[-1], position_array)
+        move(@position_array[-1], @position_array)
       end
     end
-    puts position_array
+    puts @position_array.join(" ")
   end
 
   def adjust_direction(letter, position_array, direction_array)
     if letter == 'L'
-      if direction_array.index(position_array[-1]) == 'N'
-        direction_array.index('W') - 1
+      if position_array[-1] == 'N'
+        'W'
       else
         direction_array[(direction_array.index(position_array[-1])) - 1]
       end
     elsif letter == 'R'
-      if direction_array.index(position_array[-1]) == 'W'
-        direction_array.index('N') + 1
+      if position_array[-1] == 'W'
+        'N'
       else
         direction_array[(direction_array.index(position_array[-1])) + 1]
       end
@@ -35,23 +36,51 @@ class Rover
   end
 
   def move(direction, position_array)
+    position_array[0] = position_array[0].to_i
+    position_array[1] = position_array[1].to_i
     case
-    when direction == 'N' then position_array[1].to_i += 1
-    when direction == 'E' then position_array[0].to_i += 1
-    when direction == 'S' then position_array[1].to_i -= 1
-    when direction == 'W' then position_array[0].to_i -= 1
+    when direction == 'N' then position_array[1] += 1
+    when direction == 'E' then position_array[0] += 1
+    when direction == 'S' then position_array[1] -= 1
+    when direction == 'W' then position_array[0] -= 1
     end
   end
 
 end
 
-class Controller
-  def initialize(input = Input.new, rover = Rover.new)
-    @rovers =
+input = ["3 3 E", "MMRMMRMRRM"]
+r = Rover.new(input)
+r.make_the_move(input)
+
+# class Controller
+#   def initialize(input = Input.new, rover = Rover.new)
+#     @rovers =
+#   end
+#
+#   def connect_rover
+#
+#   end
+#
+# end
+
+class Input
+
+  attr_reader :area_coordinate, :input_for_rovers
+
+  def initialize(file)
+    @file = file
+    @input_array = []
+    @input_for_rovers = []
+    @area_coordinate = ""
   end
 
-  def connect_rover
+  def parse_text
+    File.readlines(@file).each do |line|
+      @input_array << line.strip
+    end
 
+    @area_coordinate = @input_array.shift
+    @input_array.each_slice(2) { |i| @input_for_rovers << i }
   end
 
 end
@@ -98,28 +127,6 @@ end
 #   when direction == 'W' then position_array[0].to_i -= 1
 #   end
 # end
-
-class Input
-
-  attr_reader :area_coordinate, :input_for_rovers
-
-  def initialize(file)
-    @file = file
-    @input_array = []
-    @input_for_rovers = []
-    @area_coordinate = ""
-  end
-
-  def parse_text
-    File.readlines(@file).each do |line|
-      @input_array << line.strip
-    end
-
-    @area_coordinate = @input_array.shift
-    @input_array.each_slice(2) { |i| @input_for_rovers << i }
-  end
-
-end
 
 # input_array = []
 # input_for_rovers = []
