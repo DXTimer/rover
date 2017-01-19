@@ -5,39 +5,77 @@
 #
 # end
 
-class Rover
+# class Rover
+#
+#   def initialize(input = Controller.new)
+#     # @input = input
+#   end
+#
+#   def make_the_move(input)  # [["1 2 N", "LMLMLMLMM"], ["3 3 E", "MMRMMRMRRM"]]
+#
+#   end
+#
+# end
 
-  def initialize(input = Controller.new)
-    # @input = input
-  end
 
-  def make_the_move(input)  # [["1 2 N", "LMLMLMLMM"], ["3 3 E", "MMRMMRMRRM"]]
+input = [["1 2 N", "LMLMLMLMM"], ["3 3 E", "MMRMMRMRRM"]]
 
-  end
-
-end
-
-class Controller
-
-  attr_reader :area_coordinate, :input_for_rovers
-
-  def initialize(file)
-    @file = file
-    @input_array = []
-    @input_for_rovers = []
-    @area_coordinate = ""
-  end
-
-  def parse_text
-    File.readlines(@file).each do |line|
-      @input_array << line.strip
+def move(input)
+  direction_array = ['N', 'E', 'S', 'W']
+  position_array = []
+  input.each do |i|
+    position_array << i[0].split(' ')  #["1", "2", "N"]
+    i[1].split('').each do |m|  #["L", "M", "L", "M", "L", "M", "L", "M", "M"]
+      if m == 'L' || m == 'R'
+        position_array[-1] = adjust_direction(m, position_array, direction_array)
+      else
+        make_the_move(position_array[-1])
+      end
     end
-
-    @area_coordinate = @input_array.shift
-    @input_array.each_slice(2) { |i| @input_for_rovers << i }
+    puts position_array
   end
-
 end
+
+def adjust_direction(direction_array, position_array, letter)
+  if letter == 'L'
+    direction_array[direction.index(position_array[-1]) - 1]
+  elsif letter == 'R'
+    direction_array[direction.index(position_array[-1]) - 1]
+  end
+end
+
+def make_the_move(direction)
+  case
+  when direction == 'N' then position_array[1] += 1
+  when direction == 'E' then position_array[0] += 1
+  when direction == 'S' then position_array[1] -= 1
+  when direction == 'W' then position_array[0] -= 1
+  end
+end
+
+move(input)
+
+# class Controller
+#
+#   attr_reader :area_coordinate, :input_for_rovers
+#
+#   def initialize(file)
+#     @file = file
+#     @input_array = []
+#     @input_for_rovers = []
+#     @area_coordinate = ""
+#   end
+#
+#   def parse_text
+#     File.readlines(@file).each do |line|
+#       @input_array << line.strip
+#     end
+#
+#     @area_coordinate = @input_array.shift
+#     @input_array.each_slice(2) { |i| @input_for_rovers << i }
+#   end
+#
+# end
 
 # input_array = []
 # input_for_rovers = []
