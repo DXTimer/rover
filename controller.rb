@@ -27,29 +27,32 @@ def move(input)
     position_array << i[0].split(' ')  #["1", "2", "N"]
     i[1].split('').each do |m|  #["L", "M", "L", "M", "L", "M", "L", "M", "M"]
       if m == 'L' || m == 'R'
-        position_array[-1] = adjust_direction(m, position_array, direction_array)
+        position_array[-1][-1] = adjust_direction(m, position_array, direction_array)
       else
-        make_the_move(position_array[-1])
+        make_the_move(position_array[-1][-1], position_array)
       end
     end
     puts position_array
   end
 end
 
-def adjust_direction(direction_array, position_array, letter)
+def adjust_direction(letter, position_array, direction_array)
+  p position_array
   if letter == 'L'
-    direction_array[direction.index(position_array[-1]) - 1]
+    direction_array[(direction_array.index(position_array[-1][-1])) - 1]
   elsif letter == 'R'
-    direction_array[direction.index(position_array[-1]) - 1]
+    direction_array[(direction_array.index(position_array[-1][-1])) + 1]
   end
 end
 
-def make_the_move(direction)
+def make_the_move(direction, position_array)
+  position_array[-1][0] = position_array[-1][0].to_i
+  position_array[-1][1] = position_array[-1][1].to_i
   case
-  when direction == 'N' then position_array[1] += 1
-  when direction == 'E' then position_array[0] += 1
-  when direction == 'S' then position_array[1] -= 1
-  when direction == 'W' then position_array[0] -= 1
+  when direction == 'N' then position_array[-1][1] += 1
+  when direction == 'E' then position_array[-1][0] += 1
+  when direction == 'S' then position_array[-1][1] -= 1
+  when direction == 'W' then position_array[-1][0] -= 1
   end
 end
 
