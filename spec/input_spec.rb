@@ -2,8 +2,9 @@ require 'input'
 
 describe Input do
 
-  let(:input) { described_class.new('./spec/fixtures/test_input.txt') }
-  let(:instructions) { [['1 2 N', 'LMLMLMLMM'], ['3 3 E', 'MMRMMRMRRM']] }
+  subject(:input) { described_class.new('./spec/fixtures/test_input.txt') }
+  let(:instructions) { [[[1, 2, 'N'], ['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M']],
+                        [[3, 3, 'E'], ['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']]] }
   let(:input_array) { ['5 5', '1 2 N', 'LMLMLMLMM', '3 3 E', 'MMRMMRMRRM'] }
 
   describe '#read_file' do
@@ -23,7 +24,7 @@ describe Input do
       expect(input.area_coordinate).to eq("5 5")
     end
 
-    it 'returns a hash of instructions for rovers' do
+    it 'returns instructions for rovers' do
       expect(input.rovers_instructions).to eq(instructions)
     end
 
