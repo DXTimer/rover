@@ -74,7 +74,7 @@ describe Rover do
 
     it 'executes the second set of instructions' do
       position_2 = [3, 3, 'E']
-      instructions_2 = ['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R' 'M']
+      instructions_2 = ['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']
       rover = Rover.new(position_2, instructions_2)
       expect(rover.follow_instruction).to eq('5 1 E')
     end

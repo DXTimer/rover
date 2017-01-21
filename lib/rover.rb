@@ -1,5 +1,8 @@
 class Rover
-  def initialize(position, instructions) #[1, 2, 'N']  #['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M']
+
+  attr_reader :position, :direction_array
+
+  def initialize(position, instructions)
     @position = position
     @instructions = instructions
     @direction_array = ['N', 'E', 'S', 'W']
@@ -19,18 +22,18 @@ class Rover
     if letter == 'L'
       direction == 'N' ? 'W' : direction_array[(direction_array.index(direction)) - 1]
     else
-      direction == 'W' ? 'N' : direction_array[(direction_array.index(direction)) + 1]      
+      direction == 'W' ? 'N' : direction_array[(direction_array.index(direction)) + 1]
     end
   end
 
   def follow_instruction
     @instructions.each do |letter|
       if letter == 'L' || letter == 'R'
-        @position[-1] = adjust_direction(letter, @position[-1], @direction_array)
+        position[-1] = adjust_direction(letter, position[-1], direction_array)
       else
-        move(@position[-1], @position)
+        move(position[-1], position)
       end
     end
-    p @position.join(" ")
+    position.join(" ")
   end
 end
