@@ -1,48 +1,46 @@
 require 'pry'
 class Rover
 
-  def initialize(input) #["1 2 N", "LMLMLMLMM"]
-    @input = input
+  def initialize(position, instructions) #[1, 2, 'N']  #['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M']
+    @position = position
+    @instructions = instructions
     @direction_array = ['N', 'E', 'S', 'W']
-    @position_array = []
+    @position = []
   end
 
-  def make_the_move(input)
-    @position_array = @input[0].split(' ') #["1", "2", "N"]
-    @input[1].split('').each do |letter|  #["L", "M", "L", "M", "L", "M", "L", "M", "M"]
+  def make_the_move
+    @instructions.each do |letter|  #"L", "M", "L", "M", "L", "M", "L", "M", "M"
       if letter == 'L' || letter == 'R'
-        @position_array[-1] = adjust_direction(letter, @position_array, @direction_array)
+        @position[-1] = adjust_direction(letter, @position[-1], @direction_array)
       else
-        move(@position_array[-1], @position_array)
+        move(@position[-1], @position)
       end
     end
-    puts @position_array.join(" ")
+    puts @position.join(" ")
   end
 
-  def adjust_direction(letter, position_array, direction_array)
+  def adjust_direction(letter, direction, direction_array)
     if letter == 'L'
-      if position_array[-1] == 'N'
+      if direction == 'N'
         'W'
       else
-        direction_array[(direction_array.index(position_array[-1])) - 1]
+        direction_array[(direction_array.index(direction)) - 1]
       end
     elsif letter == 'R'
-      if position_array[-1] == 'W'
+      if direction == 'W'
         'N'
       else
-        direction_array[(direction_array.index(position_array[-1])) + 1]
+        direction_array[(direction_array.index(direction)) + 1]
       end
     end
   end
 
-  def move(direction, position_array)
-    position_array[0] = position_array[0].to_i
-    position_array[1] = position_array[1].to_i
+  def move(direction, position)
     case
-    when direction == 'N' then position_array[1] += 1
-    when direction == 'E' then position_array[0] += 1
-    when direction == 'S' then position_array[1] -= 1
-    when direction == 'W' then position_array[0] -= 1
+    when direction == 'N' then position[1] += 1
+    when direction == 'E' then position[0] += 1
+    when direction == 'S' then position[1] -= 1
+    when direction == 'W' then position[0] -= 1
     end
   end
 
