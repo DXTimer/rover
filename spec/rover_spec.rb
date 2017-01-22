@@ -6,22 +6,26 @@ describe Rover do
   let(:position) { [1, 2, 'N'] }
   let(:instructions) { ['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M'] }
   let(:direction_array) { ['N', 'E', 'S', 'W'] }
+  let(:north) { 'N' }
+  let(:south) { 'S' }
+  let(:east) { 'E' }
+  let(:west) { 'W' }
 
   describe '#move' do
-    it 'makes the move from N direction' do
-      expect(rover.move(direction_array[0], position)).to eq([1, 3, 'N'])
+    it 'makes the move from North' do
+      expect(rover.move(north, position)).to eq([1, 3, 'N'])
     end
 
-    it 'makes the move from E direction' do
-      expect(rover.move(direction_array[1], position)).to eq([2, 2, 'N'])
+    it 'makes the move from East' do
+      expect(rover.move(east, position)).to eq([2, 2, 'N'])
     end
 
-    it 'makes the move from S direction' do
-      expect(rover.move(direction_array[2], position)).to eq([1, 1, 'N'])
+    it 'makes the move from South' do
+      expect(rover.move(south, position)).to eq([1, 1, 'N'])
     end
 
-    it 'makes the move from W direction' do
-      expect(rover.move(direction_array[3], position)).to eq([0, 2, 'N'])
+    it 'makes the move from West' do
+      expect(rover.move(west, position)).to eq([0, 2, 'N'])
     end
   end
 
@@ -29,40 +33,40 @@ describe Rover do
     context 'rotates 90 degree left' do
       let(:letter) { 'L' }
 
-      it 'rotates from N direction' do
-        expect(rover.adjust_direction(letter, direction_array[0], direction_array)).to eq('W')
+      it 'rotates from North' do
+        expect(rover.adjust_direction(letter, north, direction_array)).to eq('W')
       end
 
-      it 'rotates from E direction' do
-        expect(rover.adjust_direction(letter, direction_array[1], direction_array)).to eq('N')
+      it 'rotates from East' do
+        expect(rover.adjust_direction(letter, east, direction_array)).to eq('N')
       end
 
-      it 'rotates from S direction' do
-        expect(rover.adjust_direction(letter, direction_array[2], direction_array)).to eq('E')
+      it 'rotates from South' do
+        expect(rover.adjust_direction(letter, south, direction_array)).to eq('E')
       end
 
-      it 'rotates from W direction' do
-        expect(rover.adjust_direction(letter, direction_array[3], direction_array)).to eq('S')
+      it 'rotates from West' do
+        expect(rover.adjust_direction(letter, west, direction_array)).to eq('S')
       end
     end
 
     context 'rotates 90 degree right' do
       let(:letter) { 'R' }
 
-      it 'rotates from N direction' do
-        expect(rover.adjust_direction(letter, direction_array[0], direction_array)).to eq('E')
+      it 'rotates from North' do
+        expect(rover.adjust_direction(letter, north, direction_array)).to eq('E')
       end
 
-      it 'rotates from E direction' do
-        expect(rover.adjust_direction(letter, direction_array[1], direction_array)).to eq('S')
+      it 'rotates from East' do
+        expect(rover.adjust_direction(letter, east, direction_array)).to eq('S')
       end
 
-      it 'rotates from S direction' do
-        expect(rover.adjust_direction(letter, direction_array[2], direction_array)).to eq('W')
+      it 'rotates from South' do
+        expect(rover.adjust_direction(letter, south, direction_array)).to eq('W')
       end
 
-      it 'rotates from W direction' do
-        expect(rover.adjust_direction(letter, direction_array[3], direction_array)).to eq('N')
+      it 'rotates from West' do
+        expect(rover.adjust_direction(letter, west, direction_array)).to eq('N')
       end
     end
   end
