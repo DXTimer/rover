@@ -10,7 +10,7 @@ describe Input do
   describe '#read_file' do
     it 'converts text file into array of string' do
       expect(input.read_file).to eq(input_array)
-      # expect(input.area_coordinate).to eq("5 5")
+      expect(input.area_coordinate).to eq("5 5")
     end
   end
 

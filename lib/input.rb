@@ -1,31 +1,26 @@
 class Input
 
-  attr_reader :area_coordinate, :input_array
+  attr_reader :area_coordinate
 
   def initialize(file)
     @file = file
-    # @area_coordinate = ""
-    @input_array = []
+    @area_coordinate = ""
   end
 
   def read_file
-    File.readlines(@file).each do |line|
-      @input_array << line.strip
+    input_array = File.readlines(@file).map do |line|
+      line.strip
     end
-    #map with assign to input
-    area_coordinate = input_array.shift
+    @area_coordinate = input_array.shift
     input_array
   end
 
   def parse_text
-    input_array.each_slice(2).map do |(even, odd)|
-      a, b, c = even.split(' ')
-      new_even = [a.to_i, b.to_i, c]
-
-      new_odd = odd.split('')
-
-      [new_even, new_odd]
+    read_file.each_slice(2).map do |(position, instructions)|
+      x, y, direction = position.split(' ')
+      new_position = [x.to_i, y.to_i, direction]
+      new_instructions = instructions.split('')
+      [new_position, new_instructions]
     end
-
   end
 end
