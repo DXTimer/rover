@@ -2,7 +2,8 @@ require 'rover'
 
 describe Rover do
 
-  subject(:rover) { described_class.new(position, instructions)}
+  subject(:rover) { described_class.new(position, instructions, area_coordinate)}
+  let(:area_coordinate) { [5, 5] }
   let(:position) { [1, 2, 'N'] }
   let(:instructions) { ['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M'] }
   let(:direction_array) { ['N', 'E', 'S', 'W'] }
@@ -15,7 +16,7 @@ describe Rover do
     it 'makes the move from North' do
       expect(rover.move(north, position)).to eq([1, 3, 'N'])
     end
-
+    
     it 'makes the move from East' do
       expect(rover.move(east, position)).to eq([2, 2, 'N'])
     end
@@ -79,8 +80,25 @@ describe Rover do
     it 'executes the second set of instructions' do
       position_2 = [3, 3, 'E']
       instructions_2 = ['M', 'M', 'R', 'M', 'M', 'R', 'M', 'R', 'R', 'M']
-      rover = Rover.new(position_2, instructions_2)
+      rover = Rover.new(position_2, instructions_2, area_coordinate)
       expect(rover.follow_instruction).to eq('5 1 E')
+    end
+  end
+
+  context 'in y plane' do
+    it 'returns current coordinate if next move is out of bound' do
+      instructions_3 = ['M', 'M', 'M', 'M', 'M']
+      rover = Rover.new(position, instructions_3, area_coordinate)
+      expect(rover.follow_instruction).to eq('1 5 N')
+    end
+  end
+
+  context 'in x plane' do
+    it 'returns current coordinate if next move is out of bound' do
+      position_2 = [3, 3, 'E']
+      instructions_4 = ['M', 'M', 'M', 'M', 'M']
+      rover = Rover.new(position_2, instructions_4, area_coordinate)
+      expect(rover.follow_instruction).to eq('5 3 E')
     end
   end
 

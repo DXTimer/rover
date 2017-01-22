@@ -11,7 +11,7 @@ class Input
     input_array = File.readlines(@file).map do |line|
       line.strip
     end
-    @area_coordinate = input_array.shift
+    @area_coordinate = input_array.shift.split(' ').map { |i| i.to_i }
     input_array
   end
 
