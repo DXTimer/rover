@@ -1,4 +1,4 @@
-require 'rover'
+require_relative 'rover'
 
 class Controller
 
