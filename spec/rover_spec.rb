@@ -23,19 +23,4 @@ describe Rover do
       expect(rover.follow_instruction(letter)).to eq([1, 2, 'E'])
     end
   end
-
-  # describe '#out_of_bound?' do
-  #   it 'returns current coordinate when out of bound' do
-  #     position = [1, 5, 'N']
-  #     instructions_5 = ['M']
-  #     letter = 'M'
-  #     rover = Rover.new(position, instructions_5, area_coordinate)
-  #     expect(rover.follow_instruction(letter)).to eq([1, 5, 'N'])
-  #   end
-  #
-  #   it 'resets coordinate to 0,0' do
-  #     rover.reset
-  #     expect(rover.position).to eq([0, 0, 'N'])
-  #   end
-  # end
 end

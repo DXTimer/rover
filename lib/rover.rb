@@ -19,17 +19,6 @@ class Rover
     @position
   end
 
-  # if out_of_bound?(@position[-1])
-  #   @position.join(" ")
-  #   reset
-  #   break
-  # end
-
-  #
-  # def reset
-  #   @position = [0, 0, 'N']
-  # end
-
   private
 
   def move(direction, position)
