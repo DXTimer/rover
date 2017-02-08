@@ -7,14 +7,6 @@ class Input
     @area_coordinate = ""
   end
 
-  def read_file
-    input_array = File.readlines(@file).map do |line|
-      line.strip
-    end
-    @area_coordinate = input_array.shift.split(' ').map { |i| i.to_i }
-    input_array
-  end
-
   def parse_text
     read_file.each_slice(2).map do |(position, instructions)|
       x, y, direction = position.split(' ')
@@ -23,4 +15,15 @@ class Input
       [new_position, new_instructions]
     end
   end
+
+  private
+
+  def read_file
+    input_array = File.readlines(@file).map do |line|
+      line.strip
+    end
+    @area_coordinate = input_array.shift.split(' ').map { |i| i.to_i }
+    input_array
+  end
+
 end
