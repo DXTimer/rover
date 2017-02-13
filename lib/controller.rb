@@ -4,19 +4,20 @@ class Controller
 
   def initialize(input = Input.new)
     @input = input.parse_text
-    @area_coordinate = input.area_coordinate
+    @x_limit = input.area_coordinate[0]
+    @y_limit = input.area_coordinate[1]
   end
 
   def activate_rovers
-    increment = 0
-    final_coordinates = []
-    @input.count.times do |i|
-      rover = Rover.new(@input[increment][0], @input[increment][1], @area_coordinate)
-      final_coordinates << execute(rover, @input[increment][1])
-      increment += 1
+    final_position = []
+    @input.each do |set_of_instructions|
+      rover = Rover.new(set_of_instructions[0], set_of_instructions[1])
+      final_position << execute(rover, set_of_instructions[1])
     end
-    final_coordinates
+    final_position
   end
+
+  private
 
   def execute(rover, instructions)
     current_position = ""
@@ -26,11 +27,27 @@ class Controller
     end
     current_position.join(' ')
   end
-end
 
-def out_of_bound?(current_position, next_move)
-  return true if current_position[0] >= @area_coordinate[0] && current_position[-1] == 'E'
-  return true if current_position[0] <= 0 && current_position[-1] == 'W'
-  return true if current_position[1] >= @area_coordinate[1] && current_position[-1] == 'N'
-  return true if current_position[1] <= 0 && current_position[-1] == 'S'
+  def out_of_bound?(current_position, next_move)
+    return true if reach_east_limit?(current_position) && next_move == 'M'
+    return true if reach_west_limit?(current_position) && next_move == 'M'
+    return true if reach_north_limit?(current_position) && next_move == 'M'
+    return true if reach_south_limit?(current_position) && next_move == 'M'
+  end
+
+  def reach_east_limit?(current_position)
+    current_position[0] >= @x_limit && current_position[-1] == 'E'
+  end
+
+  def reach_west_limit?(current_position)
+    current_position[0] <= 0 && current_position[-1] == 'W'
+  end
+
+  def reach_north_limit?(current_position)
+    current_position[1] >= @y_limit && current_position[-1] == 'N'
+  end
+
+  def reach_south_limit?(current_position)
+    current_position[1] <= 0 && current_position[-1] == 'S'
+  end
 end

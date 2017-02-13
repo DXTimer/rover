@@ -1,52 +1,49 @@
 class Rover
 
-  attr_reader :position
-
-  DIRECTION_ARRAY = ['N', 'E', 'S', 'W']
-
-  def initialize(position, instructions, area_coordinate)
-    @position = position.clone
+  def initialize(position = Position.new, instructions)
+    @position = position
     @instructions = instructions
-    @area_coordinate = area_coordinate
   end
 
   def follow_instruction(letter)
     if letter == 'L' || letter == 'R'
-      @position[-1] = adjust_direction(letter, @position[-1], DIRECTION_ARRAY)
+      @direction = adjust_direction(letter, @direction)
     else
-      move(@position[-1], @position)
+      move(@position.direction)
     end
-    @position
+    @position 
   end
-
-  # if out_of_bound?(@position[-1])
-  #   @position.join(" ")
-  #   reset
-  #   break
-  # end
-
-  #
-  # def reset
-  #   @position = [0, 0, 'N']
-  # end
 
   private
 
-  def move(direction, position)
+  def move(direction)
     case direction
-    when 'N' then position[1] += 1
-    when 'E' then position[0] += 1
-    when 'S' then position[1] -= 1
-    when 'W' then position[0] -= 1
+    when 'N' then @position.y_coordinate += 1
+    when 'E' then @position.x_coordinate += 1
+    when 'S' then @position.y_coordinate -= 1
+    when 'W' then @position.x_coordinate -= 1
     end
   end
 
-  def adjust_direction(letter, direction, direction_array)
-    if letter == 'L'
-      direction == 'N' ? 'W' : direction_array[(direction_array.index(direction)) - 1]
-    else
-      direction == 'W' ? 'N' : direction_array[(direction_array.index(direction)) + 1]
+  def adjust_direction(letter, current_direction)
+    letter == 'L' ? rotates_left(current_direction) : rotates_right(current_direction)
+  end
+
+  def rotates_left(current_direction)
+    case current_direction
+    when 'N' then 'W'
+    when 'W' then 'S'
+    when 'S' then 'E'
+    when 'E' then 'N'
     end
   end
 
+  def rotates_right(current_direction)
+    case current_direction
+    when 'N' then 'E'
+    when 'E' then 'S'
+    when 'S' then 'W'
+    when 'W' then 'N'
+    end
+  end
 end
