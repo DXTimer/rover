@@ -2,19 +2,21 @@ require_relative 'rover'
 
 class Controller
 
-  def initialize(input = Input.new)
-    @input = input.parse_text
-    @x_limit = input.area_coordinate[0]
-    @y_limit = input.area_coordinate[1]
+  def initialize(inputs = Input.new, output = Output.new)
+    @inputs = inputs.parse_text
+    @x_limit = inputs.area_coordinate[0]
+    @y_limit = inputs.area_coordinate[1]
+    @output = output
   end
 
   def activate_rovers
     final_position = []
-    @input.each do |set_of_instructions|
-      rover = Rover.new(set_of_instructions[0], set_of_instructions[1])
-      final_position << execute(rover, set_of_instructions[1])
+    @inputs.each do |input|
+      rover = Rover.new(input[0], input[1])
+      final_position << execute(rover, input[1])
     end
-    final_position
+    final_position.join(' ')
+    # is this final position of 1 rover or all the rovers?
   end
 
   private
@@ -23,9 +25,11 @@ class Controller
     current_position = ""
     instructions.each_with_index do |letter, index|
       current_position = rover.follow_instruction(letter)
-      break if out_of_bound?(current_position, instructions[index + 1])
+      if out_of_bound?(current_position, instructions[index + 1])
+        current_position + ' RIP'
+        break
+      end
     end
-    current_position.join(' ')
   end
 
   def out_of_bound?(current_position, next_move)

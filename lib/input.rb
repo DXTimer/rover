@@ -19,7 +19,7 @@ class Input
   private
 
   def read_text_file
-    input_array = File.readlines(@file).map do |line|
+    input_array = File.readlines(@file).drop(1).map do |line|
       line.strip
     end
     @area_coordinate = input_array.shift.split(' ').map { |i| i.to_i }
