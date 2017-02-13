@@ -2,12 +2,12 @@ require 'rover'
 
 describe Rover do
 
-  subject(:rover) { described_class.new(position, instructions, area_coordinate)}
-  let(:area_coordinate) { [5, 5] }
-  let(:position) { [1, 2, 'N'] }
-  let(:instructions) { ['L', 'M', 'L', 'M', 'L', 'M', 'L', 'M', 'M'] }
+  subject(:rover) { described_class.new(position, instructions)}
+  let(:instructions) { double :instructions }
 
   describe '#follow_instruction' do
+    let(:position) { [1, 2, 'N'] }
+
     it 'executes the letter L of instructions' do
       letter = 'L'
       expect(rover.follow_instruction(letter)).to eq([1, 2, 'W'])
