@@ -55,3 +55,8 @@ class Controller
     current_position[1] <= 0 && current_position[-1] == 'S'
   end
 end
+
+
+# def reset
+#   @position = [0, 0, 'N']
+# end
