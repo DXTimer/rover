@@ -2,21 +2,19 @@ require_relative 'rover'
 
 class Controller
 
-  def initialize(inputs = Input.new, output = Output.new)
+  def initialize(inputs = Input.new)
     @inputs = inputs.parse_text
-    @x_limit = inputs.area_coordinate[0]
-    @y_limit = inputs.area_coordinate[1]
-    @output = output
+    @x_limit = inputs.max_coordinates[0]
+    @y_limit = inputs.max_coordinates[1]
   end
 
   def activate_rovers
     final_position = []
     @inputs.each do |input|
-      rover = Rover.new(input[0], input[1])
+      rover = Rover.new(input[0])
       final_position << execute(rover, input[1])
     end
-    final_position.join(' ')
-    # is this final position of 1 rover or all the rovers?
+    final_position
   end
 
   private
@@ -24,12 +22,13 @@ class Controller
   def execute(rover, instructions)
     current_position = ""
     instructions.each_with_index do |letter, index|
-      current_position = rover.follow_instruction(letter)
+      p current_position = rover.follow_instruction(letter)
       if out_of_bound?(current_position, instructions[index + 1])
-        current_position + ' RIP'
+        # current_position  #' RIP'
         break
       end
     end
+    current_position.join(' ')
   end
 
   def out_of_bound?(current_position, next_move)
@@ -55,8 +54,3 @@ class Controller
     current_position[1] <= 0 && current_position[-1] == 'S'
   end
 end
-
-
-# def reset
-#   @position = [0, 0, 'N']
-# end

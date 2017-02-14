@@ -1,10 +1,10 @@
 class Input
 
-  attr_reader :area_coordinate
+  attr_reader :max_coordinates
 
   def initialize(file)
     @file = file
-    @area_coordinate = ""
+    @max_coordinates = ""
   end
 
   def parse_text
@@ -19,10 +19,10 @@ class Input
   private
 
   def read_text_file
-    input_array = File.readlines(@file).drop(1).map do |line|
+    input_array = File.readlines(@file).map do |line|
       line.strip
     end
-    @area_coordinate = input_array.shift.split(' ').map { |i| i.to_i }
+    @max_coordinates = input_array.shift.split(' ').map { |i| i.to_i }
     input_array
   end
 end
