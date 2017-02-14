@@ -1,14 +1,16 @@
 require_relative 'position'
 
 class Rover
+
+  attr_reader :position
+  
   def initialize(input)
-    @position = Position.new(input[0], input[1])
-    @direction = input[-1]
+    @position = Position.new(input[0], input[1], input[-1])
   end
 
   def follow_instruction(letter)
-    letter == 'L' || letter == 'R' ? @direction = adjust_direction(letter, @direction) : move(@direction)
-    [@position.x, @position.y, @direction]
+    letter == 'L' || letter == 'R' ? @position.direction = adjust_direction(letter, @position.direction) : move(@position.direction)
+    @position
   end
 
   private

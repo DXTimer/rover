@@ -2,6 +2,8 @@ require_relative 'rover'
 
 class Controller
 
+  BEACON = { 'RIP' => [] }
+
   def initialize(inputs = Input.new)
     @inputs = inputs.parse_text
     @x_limit = inputs.max_coordinates[0]
@@ -9,48 +11,66 @@ class Controller
   end
 
   def activate_rovers
-    final_position = []
+    final_outputs_from_all_rovers = []
     @inputs.each do |input|
       rover = Rover.new(input[0])
-      final_position << execute(rover, input[1])
+      final_outputs_from_all_rovers << execute(rover, input[1])
     end
-    final_position
+    final_outputs_from_all_rovers
   end
 
   private
 
   def execute(rover, instructions)
-    current_position = ""
     instructions.each_with_index do |letter, index|
-      p current_position = rover.follow_instruction(letter)
-      if out_of_bound?(current_position, instructions[index + 1])
-        # current_position  #' RIP'
+      position = rover.follow_instruction(letter)
+      next_move = instructions[index + 1]
+      if out_of_bound_position_in_beacon?(position, next_move)
+        next
+      elsif out_of_bound_position_not_in_beacon?(position, next_move)
+        mark_beacon(position)
         break
       end
     end
-    current_position.join(' ')
+    "#{rover.position.x} #{rover.position.y} #{rover.position.direction}"
   end
 
-  def out_of_bound?(current_position, next_move)
-    return true if reach_east_limit?(current_position) && next_move == 'M'
-    return true if reach_west_limit?(current_position) && next_move == 'M'
-    return true if reach_north_limit?(current_position) && next_move == 'M'
-    return true if reach_south_limit?(current_position) && next_move == 'M'
+  def out_of_bound_position_in_beacon?(position, next_move)
+    out_of_bound?(position, next_move) && BEACON['RIP'].include?(position)
   end
 
-  def reach_east_limit?(current_position)
-    current_position[0] >= @x_limit && current_position[-1] == 'E'
+  def out_of_bound_position_not_in_beacon?(position, next_move)
+    out_of_bound?(position, next_move) && !BEACON['RIP'].include?(position)
   end
 
-  def reach_west_limit?(current_position)
-    current_position[0] <= 0 && current_position[-1] == 'W'
+  def mark_beacon(position)
+    BEACON['RIP'] << position
+    p BEACON
   end
 
-  def reach_north_limit?(current_position)
-    current_position[1] >= @y_limit && current_position[-1] == 'N'
+  private
+
+  def out_of_bound?(position, next_move)
+    return true if reach_east_limit?(position) && next_move == 'M'
+    return true if reach_west_limit?(position) && next_move == 'M'
+    return true if reach_north_limit?(position) && next_move == 'M'
+    return true if reach_south_limit?(position) && next_move == 'M'
   end
 
-  def reach_south_limit?(current_position)
-    current_position[1] <= 0 && current_position[-1] == 'S'
+  def reach_east_limit?(position)
+    position.x >= @x_limit && position.direction == 'E'
   end
+
+  def reach_west_limit?(position)
+    position.x <= 0 && position.direction == 'W'
+  end
+
+  def reach_north_limit?(position)
+    position.y >= @y_limit && position.direction == 'N'
+  end
+
+  def reach_south_limit?(position)
+    position.y <= 0 && position.direction == 'S'
+  end
+
 end
