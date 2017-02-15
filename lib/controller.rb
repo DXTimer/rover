@@ -1,13 +1,11 @@
 require_relative 'rover'
+require_relative 'plateau'
 
 class Controller
 
-  BEACON = { 'RIP' => [] }
-
   def initialize(inputs = Input.new)
     @inputs = inputs.parse_text
-    @x_limit = inputs.max_coordinates[0]
-    @y_limit = inputs.max_coordinates[1]
+    @plateau = Plateau.new(inputs.max_coordinates[0], inputs.max_coordinates[1])
   end
 
   def activate_rovers
@@ -23,54 +21,23 @@ class Controller
 
   def execute(rover, instructions)
     instructions.each_with_index do |letter, index|
+      next if @plateau.beacon_exists?(rover.position) && letter == 'M'
+      p rover.position
+      p @plateau.beacon_exists?('5 1 E')
+      initial_position = rover.position.dup
       position = rover.follow_instruction(letter)
-      next_move = instructions[index + 1]
-      if out_of_bound_position_in_beacon?(position, next_move)
-        next
-      elsif out_of_bound_position_not_in_beacon?(position, next_move)
-        mark_beacon(position)
-        break
-      end
+      return create_beacon(initial_position) if @plateau.rover_out_of_bound?(position)
     end
-    "#{rover.position.x} #{rover.position.y} #{rover.position.direction}"
+      print_position(rover.position)
   end
 
-  def out_of_bound_position_in_beacon?(position, next_move)
-    out_of_bound?(position, next_move) && BEACON['RIP'].include?(position)
+  def create_beacon(initial_position)
+    beacon_position = print_position(initial_position)
+    @plateau.beacon << beacon_position
+    beacon_position + ' RIP'
   end
 
-  def out_of_bound_position_not_in_beacon?(position, next_move)
-    out_of_bound?(position, next_move) && !BEACON['RIP'].include?(position)
+  def print_position(position)
+    "#{position.x} #{position.y} #{position.direction}"
   end
-
-  def mark_beacon(position)
-    BEACON['RIP'] << position
-    p BEACON
-  end
-
-  private
-
-  def out_of_bound?(position, next_move)
-    return true if reach_east_limit?(position) && next_move == 'M'
-    return true if reach_west_limit?(position) && next_move == 'M'
-    return true if reach_north_limit?(position) && next_move == 'M'
-    return true if reach_south_limit?(position) && next_move == 'M'
-  end
-
-  def reach_east_limit?(position)
-    position.x >= @x_limit && position.direction == 'E'
-  end
-
-  def reach_west_limit?(position)
-    position.x <= 0 && position.direction == 'W'
-  end
-
-  def reach_north_limit?(position)
-    position.y >= @y_limit && position.direction == 'N'
-  end
-
-  def reach_south_limit?(position)
-    position.y <= 0 && position.direction == 'S'
-  end
-
 end

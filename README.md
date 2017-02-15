@@ -26,6 +26,30 @@ MMRMMRMRRM
 13N
 51E
 ```
+
+## Part 2 Extending the Problem
+
+Since the plateau is rectangular and driving over the edge results in the rover plummeting to fiery destruction, a rover that moves off an edge of the plateau is lost forever. However, lost rovers leave a beacon in the dirt that prohibits future rovers from dropping off the edge at the same grid point.
+The beacon is left at the last set of co-ordinates that the rover occupied before disappearing over the edge. An instruction to commit robotic suicide and move off the plateau from a grid point from which a rover has been previously lost is simply ignored by the current rover.
+If a rover falls off the edge of the grid the acronym "RIP" should be printed after its last position and orientation.
+
+### Test Input:
+```
+ 5 5
+ 1 2 N
+ LMLMLMLMM
+ 3 3 E 
+MMRMMLMRRM 
+4 1 S
+ MLMLMRMRM
+```
+### Expected Output:
+```
+ 1 3 N 
+5 1 E RIP 
+5 0 S
+```
+
 ## Assumption
 
 My solution is based on a few assumptions that are provided in the task info:
@@ -46,12 +70,22 @@ end
 
 ## Approach
 
-I decided to split the solution into 3 classes: Rover, Input and Controller.
+### Initial Approach
+
 * The `Input` class takes in a text file with the description of the mission, and then parses through the text file to extract useful/relevant information, ready for the `Controller` class to use.
 * The `Controller` class then uses the inputs it receives to instruct each rover to follow.
 * Once the `Rover` class is instantiated, it will use the inputs provided by the `Controller` to make the move.
 *  There's a method that checks the position of the rover to ensure it does not go out of bound, according to the `upper-right coordinates of the plateau`, before it makes the next move. If it's heading out of bound, the execution of any consecutive instructions will stop, the rover will then return its current coordinates.
 * Finally, once the mission has been completed each rover will return their final coordinates and in turn reports the results back to the `Controller`.
+
+### Updated Approach
+
+My initial approach was to do 3 classes as mentioned above.
+* I have then created a 4th class for Position to rely less on primitives.
+* I have also moved some of the responsibilities from Rover class to Controller class.
+* Makes methods private when possible.
+* Write more smaller test with shorter instructions.
+* Improve naming in some of the methods and variables.
 
 ## Instructions
 
