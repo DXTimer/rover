@@ -21,9 +21,9 @@ class Controller
 
   def execute(rover, instructions)
     instructions.each_with_index do |letter, index|
-      next if @plateau.beacon_exists?(rover.position) && letter == 'M'
-      p rover.position
-      p @plateau.beacon_exists?('5 1 E')
+      position = "#{rover.position.x} #{rover.position.y} #{rover.position.direction}"
+      next if @plateau.beacon_exists?(position) && letter == 'M'
+  
       initial_position = rover.position.dup
       position = rover.follow_instruction(letter)
       return create_beacon(initial_position) if @plateau.rover_out_of_bound?(position)

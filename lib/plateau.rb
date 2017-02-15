@@ -1,5 +1,5 @@
 class Plateau
-  
+
   attr_accessor :beacon
 
   def initialize(x_limit, y_limit)
@@ -19,6 +19,8 @@ class Plateau
     return true if reach_south_limit?(position)
   end
 
+  private
+  
   def reach_east_limit?(position)
     position.x > @x_limit && position.direction == 'E'
   end

@@ -93,4 +93,4 @@ My initial approach was to do 3 classes as mentioned above.
 2. Navigate to the directory
 2. run `bundle`
 3. To run the test, run `rspec`
-4. To demo the solution like you would in irb, run `ruby demo.rb`
+4. run `ruby demo.rb` to see the expected output
