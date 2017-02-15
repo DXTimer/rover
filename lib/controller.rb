@@ -9,21 +9,21 @@ class Controller
   end
 
   def activate_rovers
-    final_outputs_from_all_rovers = []
+    expected_outputs = []
     @inputs.each do |input|
       rover = Rover.new(input[0])
-      final_outputs_from_all_rovers << execute(rover, input[1])
+      expected_outputs << execute(rover, input[1])
     end
-    final_outputs_from_all_rovers
+    expected_outputs
   end
 
   private
 
   def execute(rover, instructions)
-    instructions.each_with_index do |letter, index|
-      position = "#{rover.position.x} #{rover.position.y} #{rover.position.direction}"
-      next if @plateau.beacon_exists?(position) && letter == 'M'
-  
+    instructions.each do |letter|
+      position_str = "#{rover.position.x} #{rover.position.y} #{rover.position.direction}"
+      next if @plateau.beacon_exists?(position_str) && letter == 'M'
+
       initial_position = rover.position.dup
       position = rover.follow_instruction(letter)
       return create_beacon(initial_position) if @plateau.rover_out_of_bound?(position)
@@ -31,8 +31,8 @@ class Controller
       print_position(rover.position)
   end
 
-  def create_beacon(initial_position)
-    beacon_position = print_position(initial_position)
+  def create_beacon(position)
+    beacon_position = print_position(position)
     @plateau.beacon << beacon_position
     beacon_position + ' RIP'
   end
@@ -40,4 +40,5 @@ class Controller
   def print_position(position)
     "#{position.x} #{position.y} #{position.direction}"
   end
+  
 end

@@ -9,8 +9,8 @@ class Position
   end
 
   def ==(another_position)
-    self.x == another_position.x
-    self.y == another_position.y
+    self.x == another_position.x &&
+    self.y == another_position.y &&
     self.direction == another_position.direction
   end
 end

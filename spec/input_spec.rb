@@ -13,5 +13,3 @@ describe Input do
     end
   end
 end
-
-#instructions class
