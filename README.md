@@ -81,10 +81,10 @@ end
 ### Updated Approach
 
 My initial approach was to do 3 classes as mentioned above.
-* I have then created a 4th class for Position to rely less on primitives.
+* I have then created a Position class and Plateau class to rely less on primitives and extract some of the responsibilities from Controller to Plateau eg. check beacon exists and check if rover is out of bound, as these methods relates to the limit of the area of plateau rovers allow to pass.
 * I have also moved some of the responsibilities from Rover class to Controller class.
 * Makes methods private when possible.
-* Write more smaller test with shorter instructions.
+* Write more smaller tests with shorter instructions.
 * Improve naming in some of the methods and variables.
 
 ## Instructions
