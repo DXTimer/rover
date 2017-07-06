@@ -33,18 +33,18 @@ If a rover falls off the edge of the grid the acronym "RIP" should be printed af
 
 ### Test Input:
 ```
- 5 5
- 1 2 N
- LMLMLMLMM
- 3 3 E 
-MMRMMLMRRM 
+5 5
+1 2 N
+LMLMLMLMM
+3 3 E
+MMRMMLMRRM
 4 1 S
- MLMLMRMRM
+MLMLMRMRM
 ```
 ### Expected Output:
 ```
- 1 3 N 
-5 1 E RIP 
+1 3 N
+5 1 E RIP
 5 0 S
 ```
 
